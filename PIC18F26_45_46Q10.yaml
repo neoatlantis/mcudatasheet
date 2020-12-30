@@ -75,3 +75,11 @@ registers:
             =1: "If LVP = 0: MCLR pin is MCLR"
             =0: "If LVP = 0: MCLR pin function is port defined function"
             
+
+    CONFIG5[0x300009:0x300008] reset 0000000000000011 <Code Protection>:
+        ^CPD[1] ro <Data NVM (DFM) Memory Code Protection bit>:
+            =1: Data NVM code protection disabled
+            =0: Data NVM code protection enabled
+        ^CP[0] ro <User NVM Program Memory Code Protection bit>:
+            =1: User NVM code protection disabled
+            =0: User NVM code protection enabled
