@@ -52,7 +52,9 @@ function renderRegister(register){
             humanName: register.humanName,
             bits: bitsDef,                  // [ {bit,}, {...}, ... ], where bit = 15,14,13,... (example)
                                             //     ||     ||
-            values: bitsDef.map((e)=>0),    // [   0,      1,   ... ]
+                                            // [   0,      1,   ... ], order is guaranteed
+            values: JSON.parse(JSON.stringify(register.bitsDefault)),
+            defaultValues: JSON.parse(JSON.stringify(register.bitsDefault)),
 
         },
 

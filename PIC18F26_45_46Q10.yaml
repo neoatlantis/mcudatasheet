@@ -1,6 +1,6 @@
 word: 8
 registers:
-    CONFIG1[0x300001:0x300000] <Oscillators>:
+    CONFIG1[0x300001:0x300000] reset 0010100101110111 <Oscillators>:
         FCMEN[13] rw <Fail-Safe Clock Monitor Enable bit>:
             =1: Fail-Safe Clock Monitor enabled
             =0: Fail-Safe Clock Monitor disabled
@@ -36,7 +36,7 @@ registers:
             =001: XT (crystal oscillator) above 500 kHz, below 4 MHz
             =000: LP (crystal oscillator) optimized for 32.768 kHz
 
-    CONFIG2[0x300003:0x300002] <Supervisor>:
+    CONFIG2[0x300003:0x300002] reset 1011111101100011 <Supervisor>:
         ^XINST[15] rw <Extended Instruction Set Enable bit>:
             =1: Extended Instruction Set and Indexed Addressing mode disabled (Legacy mode)
             =0: Extended Instruction Set and Indexed Addressing mode enabled

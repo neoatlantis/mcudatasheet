@@ -64,17 +64,34 @@ class Datasheet{
             this.wordLength
         );
 
+        let defaults = (function(){
+            if(
+                registerNameParsed.attributes &&
+                registerNameParsed.attributes.indexOf("reset") >= 0
+            ){
+                const v = registerNameParsed.attributes[
+                    registerNameParsed.attributes.indexOf("reset")+1
+                ];
+                return v.split("").map((e)=>parseInt(e,2));
+            } else {
+                let ret = [];
+                for(let i=0; i<countBits;i++) ret.push(0);
+                return ret;
+            }
+        })();
+
         return {
             name: registerNameParsed.name,
             humanName: registerNameParsed.humanName,
             bitsTotal: countBits,
             bits: (()=>{let a=[]; for(let i=countBits-1;i>=0;i--) a.push(i); return a})(),
             groups: ret,
+            bitsDefault: defaults,
         }
     }
 
     _breakName(name){ // break name spec like: ^REGISTER[0:9] rw
-        const spec0 = /^(\^?)([A-Z0-9]+)\[([0-9xA-F\:]+)\]([\sa-z]+)?(\s<(.+)>)?$/;
+        const spec0 = /^(\^?)([A-Z0-9]+)\[([0-9xA-F\:]+)\]([\sa-z0-9]+)?(\s<(.+)>)?$/;
         const match0 = name.match(spec0);
         if(!match0) throw Error("Cannot parse: " + name);
 
