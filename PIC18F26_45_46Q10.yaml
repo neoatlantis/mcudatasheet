@@ -1,0 +1,77 @@
+word: 8
+registers:
+    CONFIG1[0x300001:0x300000] <Oscillators>:
+        FCMEN[13] rw <Fail-Safe Clock Monitor Enable bit>:
+            =1: Fail-Safe Clock Monitor enabled
+            =0: Fail-Safe Clock Monitor disabled
+             
+        CSWEN[11] rw <Clock Switch Enable bit>:
+            =1: Writing to NOSC and NDIV is allowed
+            =0: The NOSC and NDIV bits cannot be changed by user software
+
+        ^CLKOUTEN[8] rw <CLKOUTEN Clock Out Enable bit>:
+            desc: If FEXTOSC = HS,XT,LP, then this bit is ignored.
+            ignored: 'FEXTOSC == HS || FEXTOSC == XT || FEXTOSC == LP'
+            =1: CLKOUT function is disabled; I/O function on OSC2
+            =0: CLKOUT function is enabled; FOSC/4 clock appears at OSC2
+
+        RSTOSC[6:4] rw <Power-up Default Value for COSC bits>: 
+            desc: This value is the Reset default value for COSC and selects the oscillator first used by user software. Refer to COSC operation.
+            =111: EXTOSC operating per FEXTOSC bits (device manufacturing default)
+            =110: HFINTOSC with HFFRQ = 4 MHz and CDIV = 4:1
+            =101: LFINTOSC
+            =100: SOSC
+            =011: Reserved
+            =010: EXTOSC with 4x PLL, with EXTOSC operating per FEXTOSC bits
+            =001: Reserved
+            =000: HFINTOSC with HFFRQ = 64 MHz and CDIV = 1:1. Resets COSC/NOSC to b'110'
+
+        FEXTOSC[2:0] rw <External Oscillator Mode Selection bits>:
+            =111: ECH (external clock) above 16 MHz
+            =110: ECM (external clock) for 500 kHz to 16 MHz
+            =101: ECL (external clock) below 500 kHz
+            =100: Oscillator not enabled
+            =011: Reserved (do not use)
+            =010: HS (crystal oscillator) above 4 MHz
+            =001: XT (crystal oscillator) above 500 kHz, below 4 MHz
+            =000: LP (crystal oscillator) optimized for 32.768 kHz
+
+    CONFIG2[0x300003:0x300002] <Supervisor>:
+        ^XINST[15] rw <Extended Instruction Set Enable bit>:
+            =1: Extended Instruction Set and Indexed Addressing mode disabled (Legacy mode)
+            =0: Extended Instruction Set and Indexed Addressing mode enabled
+        ^DEBUG[13] rw <DEBUG Debugger Enable bit>:
+            =1: Background debugger disabled
+            =0: Background debugger enabled
+        STVREN[12] rw <Stack Overflow/Underflow Reset Enable bit>:
+            =1: Stack Overflow or Underflow will cause a Reset
+            =0: Stack Overflow or Underflow will not cause a Reset
+        PPS1WAY[11] rw <PPS1WAY PPSLOCKED bit One-Way Set Enable bit>:
+            =1: The PPSLOCKED bit can only be set once after an unlocking sequence is executed; once PPSLOCK is set, all future changes to PPS registers are prevented
+            =0: The PPSLOCKED bit can be set and cleared as needed (provided an unlocking sequence is executed)
+        ^ZCD[10] rw <ZCD Disable bit>:
+            =1: ZCD disabled. ZCD can be enabled by setting the ZCDSEN bit of ZCDCON
+            =0: ZCD always enabled, PMDx[ZCDMD] bit is ignored
+        BORV[9:8] rw <Brown-out Reset Voltage Selection bit>:
+            desc: "Note: BORV - The higher voltage setting is recommended for operation at or above 16 MHz."
+            =11: Brown-out Reset Voltage (VBOR) set to 1.90V
+            =10: Brown-out Reset Voltage (VBOR) set to 2.45V
+            =01: Brown-out Reset Voltage (VBOR) set to 2.7V
+            =00: Brown-out Reset Voltage (VBOR) set to 2.85V
+        BOREN[7:6] rw <Brown-out Reset Enable bits>:
+            desc: When enabled, Brown-out Reset Voltage (VBOR) is set by BORV bit
+            =11: Brown-out Reset enabled, SBOREN bit is ignored
+            =10: Brown-out Reset enabled while running, disabled in Sleep; SBOREN is ignored
+            =01: Brown-out Reset enabled according to SBOREN
+            =00: Brown-out Reset disabled
+        ^LPBOREN[5] rw <Low-Power BOR Enable bit>:
+            =1: Low-Power Brown-out Reset is disabled
+            =0: Low-Power Brown-out Reset is enabled
+        ^PWRTE[1] rw <Power-up Timer Enable bit>:
+            =1: PWRT disabled
+            =0: PWRT enabled
+        MCLRE[0] rw <MCLRE Master Clear (MCLR) Enable bit>:
+            desc: "If LVP = 1: RE3 pin function is MCLR"
+            =1: "If LVP = 0: MCLR pin is MCLR"
+            =0: "If LVP = 0: MCLR pin function is port defined function"
+            

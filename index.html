@@ -1,0 +1,66 @@
+<html>
+<head>
+<script src="ext/yaml.js"></script>
+<script src="ext/jquery-3.5.1.min.js"></script>
+<script src="ext/vue.js"></script>
+<script src="main.js" type="module"></script>
+<style>
+body,table,tr,td{
+    font-size: 9pt;
+}
+table,tr,td{
+    border: 1px solid black;
+    border-collapse: collapse;
+    text-align: center;
+}
+table{
+    width: 100%;
+}
+.negativeLogic{
+    text-decoration: overline;
+}
+td.bit{
+    background-color: #0000EE;
+    color: white;
+}
+td.bit.bit1{
+    background-color: #EE0000;
+    color: white;
+}
+</style>
+</head>
+<body>
+
+<div id="template" style="display:none">
+
+    <h2>{{ name }} <small>{{ humanName }}</small></h2>
+
+    <table>
+        <tr v-for="(bitDef, bitDef_i) in bits">
+            <td style="width: 3em;">{{ bitDef.bit }}</td>
+            <td
+                style="width: 10em"
+                v-if="bitDef.groupSpan!=-1" v-bind:rowspan="bitDef.groupSpan>1?bitDef.groupSpan:null"
+                v-bind:class="{ negativeLogic: groupNegativeLogicByName[bitDef.withinGroup] }"
+            >{{ bitDef.withinGroup }}</td>
+            <td
+                style="width: 3em;cursor:default"
+                v-on:click="toggleBit(bitDef_i)"
+                class="bit"
+                v-bind:class="{ bit1: values[bitDef_i]==1 }"
+            >{{ values[bitDef_i] }}</td>
+            <td v-if="bitDef.groupSpan!=-1" v-bind:rowspan="bitDef.groupSpan>1?bitDef.groupSpan:null" style="text-align: left; padding-left:1em; padding-right:1em">
+                <strong v-if="groupHumanNameByName[bitDef.withinGroup]">{{ groupHumanNameByName[bitDef.withinGroup] }}<br /></strong>
+                {{ groupValues[bitDef.withinGroup] }} - {{ groupCurrentDescriptions[bitDef.withinGroup] }} 
+            </td>
+        </tr>
+    </table>
+
+
+
+
+
+</div>
+
+</body>
+</html>
