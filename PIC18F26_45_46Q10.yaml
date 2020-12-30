@@ -11,7 +11,7 @@ registers:
 
         ^CLKOUTEN[8] rw <CLKOUTEN Clock Out Enable bit>:
             desc: If FEXTOSC = HS,XT,LP, then this bit is ignored.
-            ignored: 'FEXTOSC == HS || FEXTOSC == XT || FEXTOSC == LP'
+            #ignored: 'FEXTOSC == HS || FEXTOSC == XT || FEXTOSC == LP'
             =1: CLKOUT function is disabled; I/O function on OSC2
             =0: CLKOUT function is enabled; FOSC/4 clock appears at OSC2
 
@@ -84,6 +84,33 @@ registers:
             =1: User NVM code protection disabled
             =0: User NVM code protection enabled
 
+    T0CON0[0xFD4] reset 00000000 <Timer0 Control Register 0>:
+        T0EN[7] rw <TMR0 Enable>:
+            =1: The module is enabled and operating
+            =0: The module is disabled
+        T0OUT[5] r <TMR0 Output>:
+            desc: Output of timer 0
+        T016BIT[4] rw <TMR0 Operating as 16-Bit Timer Select>:
+            =1: TMR0 is a 16-bit timer
+            =0: TMR0 is an 8-bit timer
+        T0OUTPS[3:0] rw <Output Postscaler (Divider)Value>:
+            =1111: "1:16 Postscaler"
+            =1110: "1:15 Postscaler"
+            =1101: "1:14 Postscaler"
+            =1100: "1:13 Postscaler"
+            =1011: "1:12 Postscaler"
+            =1010: "1:11 Postscaler"
+            =1001: "1:10 Postscaler"
+            =1000: "1:9 Postscaler"
+            =0111: "1:8 Postscaler"
+            =0110: "1:7 Postscaler"
+            =0101: "1:6 Postscaler"
+            =0100: "1:5 Postscaler"
+            =0011: "1:4 Postscaler"
+            =0010: "1:3 Postscaler"
+            =0001: "1:2 Postscaler"
+            =0000: "1:1 Postscaler"
+
     T0CON1[0xFD5] reset 00000000 <Timer0 Control Register 1>:
         T0CS[7:5] rw <Timer0 Clock Source Select>:
             =111: CLC1_out
@@ -116,3 +143,30 @@ registers:
             =0010: "1:4"
             =0001: "1:2"
             =0000: "1:1"
+
+
+    TRISA[0xF87] rw reset 11111111 <Tri-State Control Register (Port A)>:
+        TRISA7[7] rw:
+            =1: Port output driver is disabled
+            =0: Port output driver is enabled
+        TRISA6[6] rw:
+            =1: Port output driver is disabled
+            =0: Port output driver is enabled
+        TRISA5[5] rw:
+            =1: Port output driver is disabled
+            =0: Port output driver is enabled
+        TRISA4[4] rw:
+            =1: Port output driver is disabled
+            =0: Port output driver is enabled
+        TRISA3[3] rw:
+            =1: Port output driver is disabled
+            =0: Port output driver is enabled
+        TRISA2[2] rw:
+            =1: Port output driver is disabled
+            =0: Port output driver is enabled
+        TRISA1[1] rw:
+            =1: Port output driver is disabled
+            =0: Port output driver is enabled
+        TRISA0[0] rw:
+            =1: Port output driver is disabled
+            =0: Port output driver is enabled

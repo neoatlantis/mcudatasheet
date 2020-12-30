@@ -84,6 +84,8 @@ function renderRegister(register){
     return new Vue({
         el: "#"+elId,
         data: {
+            collapsed: false,
+
             name: register.name,
             humanName: register.humanName,
             bits: bitsDef,                  // [ {bit,}, {...}, ... ], where bit = 15,14,13,... (example)
@@ -124,7 +126,12 @@ function renderRegister(register){
                 const self = this;
                 let ret = {};
                 for(let g of register.groups){
-                    ret[g.name] = g.possibleValues[this.groupValues[g.name]];
+                    // TODO we may use conditional evaluation in this expression
+                    //ret[g.name] = g.possibleValues[this.groupValues[g.name]];
+                    ret[g.name] = g.evaluateMeaning(
+                        globalRegisterValues,    // all clusters state
+                        this.groupValues[g.name] // value of this cluster
+                    );
                 }
                 return ret;
             },

@@ -53,6 +53,8 @@ class Datasheet{
                     bitsGroupConfig[bitsGroupConfigKey];
             }
             bitsGroupRet.possibleValues = bitsGroupPossibleValues;
+            bitsGroupRet.evaluateMeaning = 
+                this._compileConditionalDescriptions(bitsGroupConfig);
 
             ret.push(bitsGroupRet);
         }
@@ -131,6 +133,59 @@ class Datasheet{
             attributes: attributes.split(" ").filter((e)=>e!=""),
         }
         
+    }
+
+    _compileConditionalDescriptions(instructions){
+        /* Take `instructions`(an object with keys of conditions and values of
+        strings), returns a function that when called with global register
+        state, can calculate a value.*/
+        const toBeEvaluated = [];
+        for(let ins in instructions){
+            if(ins == "desc" || ins == "name") continue
+            let c = ins;
+            if(/^\=[01]+/.test(ins)){ // special case for short: =0101
+                c = "$=" + c;
+            }
+            c = c.replace(/[a-zA-Z][a-zA-Z0-9]{0,}/g, "{{$&}}"); // protect all complete variable names for future replacing
+            toBeEvaluated.push([c, instructions[ins]]);
+        }
+        return function(registerStatusByName, thisCurrentValue){
+            const evaluations = toBeEvaluated.map(([c, desc]) => {
+                let variables = c.match(/\{\{[0-9a-z]\}\}/ig);
+                if(variables){
+                    for(let variableEnclosed of variables){
+                        let variableName = variable.Enclosed.slice(2, -2);
+                        let value = registerStatusByName[variableName];
+                        if(value === undefined){
+                            // not found in global register status
+                            console.warn("Cannot find register: " + variableName);
+                        }
+                        c = c.replace(variableEnclosed, value);
+                    }
+                }
+                // inject current value of this cluster
+                c = c.replace("$", thisCurrentValue);
+
+                // now quote all 0101000... strings
+                c = c.replace(/[01]+/g, "\"$&\"");
+
+                try{
+                    if(eval(c) === true) return desc;
+                } catch(e){
+                    console.error(c, e);
+                }
+                return null;
+            }).filter((e)=>e != null);
+
+            if(evaluations.length > 0){
+                if(evaluations.length > 1){
+                    console.warn(instructions, "is ambiguous");
+                }
+                return evaluations[0];
+            } else {
+                return "Undefined behaviour? Check datasheet definition.";
+            }
+        }
     }
 
 }

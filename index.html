@@ -36,9 +36,11 @@ td.bit.bit1{
 
 <div id="template" style="display:none">
 
-    <h2>{{ name }} <small>{{ humanName }}</small></h2>
+    <div v-on:click="collapsed=!collapsed" style="border: 1px solid black; background-color:#CCCCFF; padding:0.5em">
+        <strong>{{ name }}</strong> <span>{{ humanName }}</span></h2>
+    </div>
 
-    <table>
+    <table v-show="!collapsed">
         <tr v-for="(bitDef, bitDef_i) in bits">
             <td style="width: 3em;">{{ bitDef.bit }}</td>
             <td
@@ -59,9 +61,7 @@ td.bit.bit1{
         </tr>
     </table>
 
-
-
-
+    <br />
 
 </div>
 
