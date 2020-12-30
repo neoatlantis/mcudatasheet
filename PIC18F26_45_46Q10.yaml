@@ -83,3 +83,36 @@ registers:
         ^CP[0] ro <User NVM Program Memory Code Protection bit>:
             =1: User NVM code protection disabled
             =0: User NVM code protection enabled
+
+    T0CON1[0xFD5] reset 00000000 <Timer0 Control Register 1>:
+        T0CS[7:5] rw <Timer0 Clock Source Select>:
+            =111: CLC1_out
+            =110: MFINTOSC (500 kHz)
+            =101: SOSC
+            =100: LFINTOSC
+            =011: HFINTOSC
+            =010: FOSC/4
+            =001: Pin selected by T0CKIPPS (Inverted)
+            =000: Pin selected by T0CKIPPS (Non-inverted)
+
+        T0ASYUNC[4] rw <TMR0 Input Asynchronization Enable>:
+            =1: The input to the TMR0 counter is not synchronized to system clocks
+            =0: The input to the TMR0 counter is synchronized to FOSC/4
+
+        T0CKPS[3:0] rw <Prescaler Rate Select>:
+            =1111: "1:32768"
+            =1110: "1:16384"
+            =1101: "1:8192"
+            =1100: "1:4096"
+            =1011: "1:2048"
+            =1010: "1:1024"
+            =1001: "1:512"
+            =1000: "1:256"
+            =0111: "1:128"
+            =0110: "1:64"
+            =0101: "1:32"
+            =0100: "1:16"
+            =0011: "1:8"
+            =0010: "1:4"
+            =0001: "1:2"
+            =0000: "1:1"

@@ -59,17 +59,23 @@ function renderRegister(register){
     }
 
     if(bitsDef.length > 1){
-        for(let i=1; i<bitsDef.length; i++){
-            if(
-                bitsDef[i].withinGroup != bitsDef[i-1].withinGroup &&
-                bitsDef[i].withinGroup != ""
-            ){
-                bitsDef[i].groupSpan = getGroupByName(bitsDef[i].withinGroup).range.length;
-            } else if (
-                bitsDef[i].withinGroup == bitsDef[i-1].withinGroup &&
-                bitsDef[i].withinGroup != ""
-            ){
-                bitsDef[i].groupSpan = -1;
+        for(let i=0; i<bitsDef.length; i++){
+            if(i==0){
+                if(bitsDef[i].withinGroup != ""){
+                    bitsDef[0].groupSpan = getGroupByName(bitsDef[0].withinGroup).range.length;
+                }
+            } else {
+                if(
+                    bitsDef[i].withinGroup != bitsDef[i-1].withinGroup &&
+                    bitsDef[i].withinGroup != ""
+                ){
+                    bitsDef[i].groupSpan = getGroupByName(bitsDef[i].withinGroup).range.length;
+                } else if (
+                    bitsDef[i].withinGroup == bitsDef[i-1].withinGroup &&
+                    bitsDef[i].withinGroup != ""
+                ){
+                    bitsDef[i].groupSpan = -1;
+                }
             }
         }
     }
