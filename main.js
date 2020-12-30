@@ -3,8 +3,38 @@ import getDatasheet from "./Datasheet.js";
 //////////////////////////////////////////////////////////////////////////////
 
 
+const globalRegisterEvents = new Vue({ el: '#global', });
+const allRegistersRendered = {};
+const globalRegisterValues = {};
+
+globalRegisterEvents.$on("changed", function(registerName){
+    const register = allRegistersRendered[registerName];
+    for(let k in register.groupValues){
+        globalRegisterValues[k] = register.groupValues[k];
+    }
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 const datasheet = await getDatasheet("PIC18F26_45_46Q10.yaml");
-for(let r in datasheet.registers) renderRegister(datasheet.registers[r]);
+for(let r in datasheet.registers){
+    const newRegister = renderRegister(datasheet.registers[r]);
+    allRegistersRendered[newRegister.name] = newRegister;
+}
 function renderRegister(register){
     const elId = "register-" + register.name;
     $("<div>", { id: elId }).html($("#template").html()).appendTo("body");
@@ -61,6 +91,7 @@ function renderRegister(register){
         methods: {
             toggleBit: function(values_i){
                 this.$set(this.values, values_i, 1^this.values[values_i]);
+                globalRegisterEvents.$emit("changed", this.name);
             }
         },
 
