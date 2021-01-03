@@ -145,20 +145,23 @@ class Datasheet{
             let c = ins;
             if(/^\=[01]+/.test(ins)){ // special case for short: =0101
                 c = "$=" + c;
+            } else if(/^\=\=[01]+/.test(ins)){ // special case for short: =0101
+                c = "$" + c;
             }
             c = c.replace(/[a-zA-Z][a-zA-Z0-9]{0,}/g, "{{$&}}"); // protect all complete variable names for future replacing
             toBeEvaluated.push([c, instructions[ins]]);
         }
         return function(registerStatusByName, thisCurrentValue){
             const evaluations = toBeEvaluated.map(([c, desc]) => {
-                let variables = c.match(/\{\{[0-9a-z]\}\}/ig);
+                let variables = c.match(/\{\{[0-9a-z]+\}\}/ig);
                 if(variables){
                     for(let variableEnclosed of variables){
-                        let variableName = variable.Enclosed.slice(2, -2);
+                        let variableName = variableEnclosed.slice(2, -2);
                         let value = registerStatusByName[variableName];
                         if(value === undefined){
                             // not found in global register status
                             console.warn("Cannot find register: " + variableName);
+                            return;
                         }
                         c = c.replace(variableEnclosed, value);
                     }

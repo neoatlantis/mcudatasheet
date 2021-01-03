@@ -74,7 +74,70 @@ registers:
             desc: "If LVP = 1: RE3 pin function is MCLR"
             =1: "If LVP = 0: MCLR pin is MCLR"
             =0: "If LVP = 0: MCLR pin function is port defined function"
-            
+    
+    CONFIG3[0x300005:0x300004] rw reset 0011111101111111 <Windowed Watchdog Timer>:
+        
+        WDTCCS[13:11] rw <WDT Input Clock Selector bits>:
+            WDTE==00: WDTE=00, These bits have no effect
+            ==111 && WDTE!=00: WDTE≠00, Software Control
+            ==110 && WDTE!=00: WDTE≠00, Reserved (Default to LFINTOSC)
+            ==101 && WDTE!=00: WDTE≠00, Reserved (Default to LFINTOSC)
+            ==100 && WDTE!=00: WDTE≠00, Reserved (Default to LFINTOSC)
+            ==011 && WDTE!=00: WDTE≠00, Reserved (Default to LFINTOSC)
+            ==010 && WDTE!=00: WDTE≠00, Reserved (Default to LFINTOSC)
+            ==001 && WDTE!=00: WDTE≠00, WDT reference clock is the 31.25 kHz MFINTOSC
+            ==000 && WDTE!=00: WDTE≠00, WDT reference clock is the 31.0 kHz LFINTOSC (default value)
+        WDTCWS[10:8] rw <WDT Window Select bits>:
+            =111: 'Window delay n/a, Window opening 100%, Software control: Yes, Keyed access: No'
+            =110: 'Window delay n/a, Window opening 100%, Software control: No, Keyed access: Yes'
+            =101: 'Window delay 25%, Window opening 75%, Software control: No, Keyed access: Yes'
+            =100: 'Window delay 37.5%, Window opening 62.5%, Software control: No, Keyed access: Yes'
+            =011: 'Window delay 50%, Window opening 50%, Software control: No, Keyed access: Yes'
+            =010: 'Window delay 62.5%, Window opening 37.5%, Software control: No, Keyed access: Yes'
+            =001: 'Window delay 75%, Window opening 25%, Software control: No, Keyed access: Yes'
+            =000: 'Window delay 87.5%, Window opening 12.5%, Software control: No, Keyed access: Yes'
+        WDTE[6:5] rw <WDT Operating Mode bits>:
+            =11: WDT enabled regardless of Sleep; SEN bit in WDTCON0 is ignored
+            =10: WDT enabled while Sleep = 0, suspended when Sleep = 1; SEN bit in WDTCON0 is ignored
+            =01: WDT enabled/disabled by SEN bit in WDTCON0
+            =00: WDT disabled, SEN bit in WDTCON0 is ignored
+        WDTCPS[4:0] rw <WDT Period Select bits>:
+            =11111: to be written here...
+
+    CONFIG4[0x300007:0x300006] rw reset 0011011100001111 <Memory Write Protection>:
+        LVP[13] rw <LVP Low-Voltage Programming Enable bit>:
+            desc: |
+                The LVP bit cannot be written (to zero) while operating from
+                the LVP programming interface. The purpose of this rule is to
+                prevent the user from dropping out of LVP mode while
+                programming from LVP mode, or accidentally eliminating LVP mode
+                from the Configuration state.
+            =1: Low-voltage programming enabled. MCLR/VPP pin function is MCLR. MCLRE Configuration bit is ignored.
+            =0: HV on MCLR/VPP must be used for programming
+        SCANE[12] <Scanner Enable bit>:
+            =1: Scanner module is available for use, PMD0[SCANMD] bit enables the module
+            =0: Scanner module is NOT available for use, PMD0[SCANMD] bit is ignored
+        WRTD[10] rw <WRTD Data EEPROM Write Protection bit>:
+            =1: Data EEPROM NOT write-protected
+            =0: Data EEPROM write-protected
+        WRTB[9] rw <Boot Block Write Protection bit>:
+            =1: Boot Block NOT write-protected
+            =0: Boot Block write-protected
+        WRTC[8] rw <Configuration Register Write Protection bit>:
+            =1: Configuration Registers NOT write-protected
+            =0:  Configuration Registers write-protected
+        WRT3[3] <User NVM Self-Write Protection bits>:
+            =1: Corresponding Memory Block NOT write-protected
+            =0:  Corresponding Memory Block write-protected
+        WRT2[2] <User NVM Self-Write Protection bits>:
+            =1: Corresponding Memory Block NOT write-protected
+            =0:  Corresponding Memory Block write-protected
+        WRT1[1] <User NVM Self-Write Protection bits>:
+            =1: Corresponding Memory Block NOT write-protected
+            =0:  Corresponding Memory Block write-protected
+        WRT0[0] <User NVM Self-Write Protection bits>:
+            =1: Corresponding Memory Block NOT write-protected
+            =0:  Corresponding Memory Block write-protected
 
     CONFIG5[0x300009:0x300008] reset 0000000000000011 <Code Protection>:
         ^CPD[1] ro <Data NVM (DFM) Memory Code Protection bit>:

@@ -34,10 +34,12 @@ const datasheet = await getDatasheet("PIC18F26_45_46Q10.yaml");
 for(let r in datasheet.registers){
     const newRegister = renderRegister(datasheet.registers[r]);
     allRegistersRendered[newRegister.name] = newRegister;
+    newRegister.toggleBit(0);
+    newRegister.toggleBit(0);
 }
 function renderRegister(register){
     const elId = "register-" + register.name;
-    $("<div>", { id: elId }).html($("#template").html()).appendTo("body");
+    $("<div>", { id: elId }).html($("#template").html()).appendTo("#content");
 
     function getGroupByName(name){
         return register.groups.filter((e)=>e.name==name)[0];
@@ -80,8 +82,7 @@ function renderRegister(register){
         }
     }
 
-
-    return new Vue({
+    const ret = new Vue({
         el: "#"+elId,
         data: {
             collapsed: false,
@@ -93,7 +94,6 @@ function renderRegister(register){
                                             // [   0,      1,   ... ], order is guaranteed
             values: JSON.parse(JSON.stringify(register.bitsDefault)),
             defaultValues: JSON.parse(JSON.stringify(register.bitsDefault)),
-
         },
 
         methods: {
@@ -151,8 +151,9 @@ function renderRegister(register){
             },
         },
     });
-}
 
+    return ret;
+}
 
 
 

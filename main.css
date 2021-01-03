@@ -1,0 +1,36 @@
+
+#toc{
+    position: fixed;
+    top: 0; bottom: 0; left: 0; right: 80%;
+    background: #000033;
+    color: #FFFFFF;
+}
+#content{
+    position: absolute;
+    left:20%;
+    padding-left: 1em;
+}
+
+
+body,table,tr,td{
+    font-size: 9pt;
+}
+table,tr,td{
+    border: 1px solid black;
+    border-collapse: collapse;
+    text-align: center;
+}
+table{
+    width: 100%;
+}
+.negativeLogic{
+    text-decoration: overline;
+}
+td.bit{
+    background-color: #0000EE;
+    color: white;
+}
+td.bit.bit1{
+    background-color: #EE0000;
+    color: white;
+}
