@@ -1,3 +1,10 @@
+types:
+    - &TYPE_ENABLED_DISABLED
+        =1: Enabled
+        =0: Disabled
+
+
+
 word: 8
 registers:
     CONFIG1[0x300001:0x300000] reset 0010100101110111 <Oscillators>:
@@ -303,21 +310,29 @@ registers:
     PIE0[0xEBD] rw reset 00000000 <Peripheral Interrupt Enable Register 0>:
         TMR0IE[5] rw <Timer0 Interrupt Enable bit>:
             desc: PIR0 interrupts are not disabled by the PEIE bit in the INTCON register.
-            =1: Enabled
-            =0: Disabled
+            <<: *TYPE_ENABLED_DISABLED
         IOCIE[4] rw <Interrupt-on-Change Enable bit>:
             desc: PIR0 interrupts are not disabled by the PEIE bit in the INTCON register.
-            =1: Enabled
-            =0: Disabled
+            <<: *TYPE_ENABLED_DISABLED
         INT2IE[2] rw <External Interrupt 2 Enable bit>:
             desc: PIR0 interrupts are not disabled by the PEIE bit in the INTCON register.
-            =1: Enabled
-            =0: Disabled
+            <<: *TYPE_ENABLED_DISABLED
         INT1IE[1] rw <External Interrupt 1 Enable bit>:
             desc: PIR0 interrupts are not disabled by the PEIE bit in the INTCON register.
-            =1: Enabled
-            =0: Disabled
+            <<: *TYPE_ENABLED_DISABLED
         INT0IE[0] rw <External Interrupt 0 Enable bit>:
             desc: PIR0 interrupts are not disabled by the PEIE bit in the INTCON register.
-            =1: Enabled
-            =0: Disabled
+            <<: *TYPE_ENABLED_DISABLED
+
+    PIE1[0xEBE] rw reset 00000000 <Peripheral Interrupt Enable Register 1>:
+        OSCFIE[7] rw <Oscillator Fail Interrupt Enable bit>:
+            <<: *TYPE_ENABLED_DISABLED
+        CSWIE[6] rw <Clock-Switch Interrupt Enable bit>:
+            <<: *TYPE_ENABLED_DISABLED
+        ADTIE[1] rw <ADC Threshold Interrupt Enable bit>:
+            <<: *TYPE_ENABLED_DISABLED
+        ADIE[0] rw <ADC Interrupt Enable bit>:
+            <<: *TYPE_ENABLED_DISABLED
+
+
+

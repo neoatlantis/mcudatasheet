@@ -2,6 +2,8 @@ import getDatasheet from "./Datasheet.js";
 (async function(){
 //////////////////////////////////////////////////////////////////////////////
 
+const MCU_TYPE = "PIC18F26/45/46Q10";
+
 
 const globalRegisterEvents = new Vue({ el: '#global', });
 const allRegistersRendered = {};
@@ -18,7 +20,10 @@ globalRegisterEvents.$on("changed", function(registerName){
 
 
 
-const tableOfContents = new Vue({ el: "#toc", data: { bookmarks: [] } });
+const tableOfContents = new Vue({ el: "#toc", data: { 
+    mcu: MCU_TYPE, 
+    bookmarks: []
+} });
 
 
 
@@ -33,7 +38,7 @@ const tableOfContents = new Vue({ el: "#toc", data: { bookmarks: [] } });
 
 
 
-const datasheet = await getDatasheet("PIC18F26_45_46Q10.yaml");
+const datasheet = await getDatasheet(MCU_TYPE.replace(/\//ig, "_") + ".yaml");
 for(let r in datasheet.registers){
     const newRegister = renderRegister(datasheet.registers[r]);
     allRegistersRendered[newRegister.name] = newRegister;
