@@ -235,7 +235,7 @@ registers:
             =0: Port output driver is enabled
 
 
-    INTCON[0xFF2] rw <Interrupt Control Register>:
+    INTCON[0xFF2] rw reset 00000111 <Interrupt Control Register>:
         GIE/GIEH[7] rw <Global Interrupt Enable bit>:
             ==1 && IPEN==1: If IPEN = 1 Enables all unmasked interrupts and cleared by hardware for high-priority interrupts only
             ==0 && IPEN==1: If IPEN = 1 Disables all interrupts
@@ -249,13 +249,13 @@ registers:
         IPEN[5] rw <IPEN Interrupt Priority Enable bit>:
             =1: Enable priority levels on interrupts
             =0: Disable priority levels on interrupts
-        INT2EDG[2] rw <INT2EDG External Interrupt ‘2’ Edge Select bit>:
+        INT2EDG[2] rw <External Interrupt 2 Edge Select bit>:
             =1: Interrupt on rising edge of INT2 pin
             =0:  Interrupt on falling edge of INT2 pin
-        INT1EDG[1] rw <INT1EDG External Interrupt ‘1’ Edge Select bit>:
+        INT1EDG[1] rw <External Interrupt 1 Edge Select bit>:
             =1: Interrupt on rising edge of INT1 pin
             =0:  Interrupt on falling edge of INT1 pin
-        INT0EDG[0] rw <INT0EDG External Interrupt ‘0’ Edge Select bit>:
+        INT0EDG[0] rw <External Interrupt 0 Edge Select bit>:
             =1: Interrupt on rising edge of INT0 pin
             =0:  Interrupt on falling edge of INT0 pin
         desc: |
@@ -264,3 +264,60 @@ registers:
             the global enable bit. User software should ensure the appropriate
             interrupt flag bits are clear prior to enabling an interrupt. This
             feature allows for software polling."
+
+
+    PIR0[0xEC5] rw reset 00000000 <Peripheral Interrupt Request (Flag) Register 0>:
+        TMR0IF[5] rw <Timer0 Interrupt Flag bit>:
+            desc: Interrupts are not disabled by the PEIE bit.
+            =1: TMR0 register has overflowed (must be cleared by software)
+            =0: TMR0 register has not overflowed
+        IOCIF[4] r <Interrupt-on-Change Flag bit>:
+            desc: |
+                Interrupts are not disabled by the PEIE bit; IOCIF is a
+                read-only bit; to clear the interrupt condition, all bits in
+                the IOCF register must be cleared.
+            =1: IOC event has occurred (must be cleared by software)
+            =0: IOC event has not occurred
+        INT2IF[2] rw <External Interrupt 2 Flag bit>:
+            desc: |
+                Interrupts are not disabled by the PEIE bit;
+                The external interrupt GPIO pin is selected by the INTPPS
+                register.
+            =1: External Interrupt 2 has occurred
+            =0: External Interrupt 2 has not occurred
+        INT1IF[1] rw <External Interrupt 1 Flag bit>:
+            desc: |
+                Interrupts are not disabled by the PEIE bit;
+                The external interrupt GPIO pin is selected by the INTPPS
+                register.
+            =1: External Interrupt 1 has occurred
+            =0: External Interrupt 1 has not occurred
+        INT0IF[0] rw <External Interrupt 0 Flag bit>:
+            desc: |
+                Interrupts are not disabled by the PEIE bit;
+                The external interrupt GPIO pin is selected by the INTPPS
+                register.
+            =1: External Interrupt 0 has occurred
+            =0: External Interrupt 0 has not occurred
+
+    PIE0[0xEBD] rw reset 00000000 <Peripheral Interrupt Enable Register 0>:
+        TMR0IE[5] rw <Timer0 Interrupt Enable bit>:
+            desc: PIR0 interrupts are not disabled by the PEIE bit in the INTCON register.
+            =1: Enabled
+            =0: Disabled
+        IOCIE[4] rw <Interrupt-on-Change Enable bit>:
+            desc: PIR0 interrupts are not disabled by the PEIE bit in the INTCON register.
+            =1: Enabled
+            =0: Disabled
+        INT2IE[2] rw <External Interrupt 2 Enable bit>:
+            desc: PIR0 interrupts are not disabled by the PEIE bit in the INTCON register.
+            =1: Enabled
+            =0: Disabled
+        INT1IE[1] rw <External Interrupt 1 Enable bit>:
+            desc: PIR0 interrupts are not disabled by the PEIE bit in the INTCON register.
+            =1: Enabled
+            =0: Disabled
+        INT0IE[0] rw <External Interrupt 0 Enable bit>:
+            desc: PIR0 interrupts are not disabled by the PEIE bit in the INTCON register.
+            =1: Enabled
+            =0: Disabled

@@ -12,6 +12,14 @@
 <div id="global"></div>
 
 <div id="toc">
+    <ul>
+        <li v-for="bookmark in bookmarks">
+            <a v-bind:href="bookmark.href">
+                <strong>{{ bookmark.name }}</strong>
+                <i>{{ bookmark.humanName }}</i>
+            </a>
+        </li>
+    </ul>
 
 </div>
 
@@ -25,7 +33,7 @@
     </div>
 
     <table v-show="!collapsed">
-        <tr v-for="(bitDef, bitDef_i) in bits">
+        <tr v-for="(bitDef, bitDef_i) in bits" v-if="bitDef.withinGroup">
             <td style="width: 3em;">{{ bitDef.bit }}</td>
             <td
                 style="width: 10em"

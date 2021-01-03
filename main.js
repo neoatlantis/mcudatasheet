@@ -18,6 +18,9 @@ globalRegisterEvents.$on("changed", function(registerName){
 
 
 
+const tableOfContents = new Vue({ el: "#toc", data: { bookmarks: [] } });
+
+
 
 
 
@@ -36,6 +39,11 @@ for(let r in datasheet.registers){
     allRegistersRendered[newRegister.name] = newRegister;
     newRegister.toggleBit(0);
     newRegister.toggleBit(0);
+    tableOfContents.bookmarks.push({
+        name: newRegister.name,
+        humanName: newRegister.humanName,
+        href: "#register-" + newRegister.name,
+    });
 }
 function renderRegister(register){
     const elId = "register-" + register.name;
