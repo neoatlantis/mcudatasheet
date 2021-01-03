@@ -21,8 +21,13 @@ class Datasheet{
         const ret = [];
 
         // parse each bits group within a register
-
+        let registerDesc = "";
         for(let bitsGroupDef in registerConfig){
+            if(bitsGroupDef == "desc"){
+                registerDesc = registerConfig.desc;
+                continue;
+            }
+
             const bitsGroupConfig = registerConfig[bitsGroupDef];
             const bitsGroupDefParsed = this._breakName(bitsGroupDef);
 
@@ -89,11 +94,12 @@ class Datasheet{
             bits: (()=>{let a=[]; for(let i=countBits-1;i>=0;i--) a.push(i); return a})(),
             groups: ret,
             bitsDefault: defaults,
+            desc: registerDesc,
         }
     }
 
     _breakName(name){ // break name spec like: ^REGISTER[0:9] rw
-        const spec0 = /^(\^?)([A-Z0-9]+)\[([0-9xA-F\:]+)\]([\sa-z0-9]+)?(\s<(.+)>)?$/;
+        const spec0 = /^(\^?)([A-Z][A-Z\/0-9]+)\[([0-9xA-F\:]+)\]([\sa-z0-9]+)?(\s<(.+)>)?$/;
         const match0 = name.match(spec0);
         if(!match0) throw Error("Cannot parse: " + name);
 

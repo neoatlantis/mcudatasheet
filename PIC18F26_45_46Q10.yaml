@@ -233,3 +233,34 @@ registers:
         TRISA0[0] rw:
             =1: Port output driver is disabled
             =0: Port output driver is enabled
+
+
+    INTCON[0xFF2] rw <Interrupt Control Register>:
+        GIE/GIEH[7] rw <Global Interrupt Enable bit>:
+            ==1 && IPEN==1: If IPEN = 1 Enables all unmasked interrupts and cleared by hardware for high-priority interrupts only
+            ==0 && IPEN==1: If IPEN = 1 Disables all interrupts
+            ==1 && IPEN==0: If IPEN = 0 Enables all unmasked interrupts and cleared by hardware for all interrupts
+            ==0 && IPEN==0: If IPEN = 0 Disables all interrupts
+        PEIE/GIEL[6] rw <Peripheral Interrupt Enable bit>:
+            ==1 && IPEN==1: If IPEN = 1 Enables all low-priority interrupts and cleared by hardware for low-priority interrupts only
+            ==0 && IPEN==1: If IPEN = 1 Disables all low-priority interrupts
+            ==1 && IPEN==0: If IPEN = 0 Enables all unmasked peripheral interrupts
+            ==0 && IPEN==0:  If IPEN = 0 Disables all peripheral interrupts
+        IPEN[5] rw <IPEN Interrupt Priority Enable bit>:
+            =1: Enable priority levels on interrupts
+            =0: Disable priority levels on interrupts
+        INT2EDG[2] rw <INT2EDG External Interrupt ‘2’ Edge Select bit>:
+            =1: Interrupt on rising edge of INT2 pin
+            =0:  Interrupt on falling edge of INT2 pin
+        INT1EDG[1] rw <INT1EDG External Interrupt ‘1’ Edge Select bit>:
+            =1: Interrupt on rising edge of INT1 pin
+            =0:  Interrupt on falling edge of INT1 pin
+        INT0EDG[0] rw <INT0EDG External Interrupt ‘0’ Edge Select bit>:
+            =1: Interrupt on rising edge of INT0 pin
+            =0:  Interrupt on falling edge of INT0 pin
+        desc: |
+            "Important: Interrupt flag bits are set when an interrupt condition
+            occurs, regardless of the state of its corresponding enable bit or
+            the global enable bit. User software should ensure the appropriate
+            interrupt flag bits are clear prior to enabling an interrupt. This
+            feature allows for software polling."
