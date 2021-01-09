@@ -52,3 +52,7 @@ td.bit.bit1{
     background-color: #EE0000;
     color: white;
 }
+
+.clusterName{
+    font-family: monospace;
+}

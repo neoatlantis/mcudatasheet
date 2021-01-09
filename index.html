@@ -40,6 +40,7 @@
                 style="width: 10em"
                 v-if="bitDef.groupSpan!=-1" v-bind:rowspan="bitDef.groupSpan>1?bitDef.groupSpan:null"
                 v-bind:class="{ negativeLogic: groupNegativeLogicByName[bitDef.withinGroup] }"
+                class="clusterName"
             >{{ bitDef.withinGroup }}</td>
             <td
                 style="width: 3em;cursor:default"

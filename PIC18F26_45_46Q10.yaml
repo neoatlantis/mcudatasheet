@@ -334,5 +334,45 @@ registers:
         ADIE[0] rw <ADC Interrupt Enable bit>:
             <<: *TYPE_ENABLED_DISABLED
 
+    PIE2[0xEBF] rw reset 00000000 <Peripheral Interrupt Enable Register 2>:
+        HLVDIE[7] rw <HLVD Interrupt Enable bit>:
+            <<: *TYPE_ENABLED_DISABLED
+        ZCDIE[6] rw <Zero-Cross Detect Interrupt Enable bit>:
+            <<: *TYPE_ENABLED_DISABLED
+        C1IE[1] rw <Comparator 1 Interrupt Enable bit>:
+            <<: *TYPE_ENABLED_DISABLED
+        C0IE[0] rw <Comparator 0 Interrupt Enable bit>:
+            <<: *TYPE_ENABLED_DISABLED
 
 
+    PIE3[0xEC0] rw reset 00000000 <Peripheral Interrupt Enable Register 3>:
+        RC2IE[7] rw <EUSART2 Receive Interrupt Enable bit>:
+            <<: *TYPE_ENABLED_DISABLED
+        TX2IE[6] rw <EUSART2 Transmit Interrupt Enable bit>:
+            <<: *TYPE_ENABLED_DISABLED
+        RC1IE[5] rw <EUSART1 Receive Interrupt Enable bit>:
+            <<: *TYPE_ENABLED_DISABLED
+        TX1IE[4] rw <EUSART1 Transmit Interrupt Enable bit>:
+            <<: *TYPE_ENABLED_DISABLED
+        BCL2IE[3] rw <MSSP2 Bus Collision Interrupt Enable bit>:
+            <<: *TYPE_ENABLED_DISABLED
+        SSP2IE[2] rw <Synchronous Serial Port 2 Interrupt Enable bit>:
+            <<: *TYPE_ENABLED_DISABLED
+        BCL1IE[1] rw <MSSP1 Bus Collision Interrupt Enable bit>:
+            <<: *TYPE_ENABLED_DISABLED
+        SSP1IE[0] rw <Synchronous Serial Port 0 Interrupt Enable bit>:
+            <<: *TYPE_ENABLED_DISABLED
+
+    PIE4[0xEC1] rw reset 00000000 <Peripheral Interrupt Enable Register 4>:
+        TMR6IE[5] rw <TMR6 to PR6 Match Interrupt Enable bit>:
+            <<: *TYPE_ENABLED_DISABLED
+        TMR5IE[4] rw <TMR5 Overflow Interrupt Enable bit>:
+            <<: *TYPE_ENABLED_DISABLED
+        TMR4IE[3] rw <TMR4 to PR4 Match Interrupt Enable bit>:
+            <<: *TYPE_ENABLED_DISABLED
+        TMR3IE[2] rw <TMR3 Overflow Interrupt Enable bit>:
+            <<: *TYPE_ENABLED_DISABLED
+        TMR2IE[1] rw <TMR2 to PR2 Match Interrupt Enable bit>:
+            <<: *TYPE_ENABLED_DISABLED
+        TMR1IE[0] rw <TMR1 Overflow Interrupt Enable bit>:
+            <<: *TYPE_ENABLED_DISABLED
