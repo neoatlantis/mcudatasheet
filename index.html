@@ -21,7 +21,19 @@
             </a>
         </li>
     </ul>
+</div>
 
+<div id="cluster-options" v-show="visible" v-on:click="visible=false">
+    <div class="dialog" v-on:click.prevent.self="">
+        <div class="scrollable">
+            <h2>{{ cluster }}</h2>
+            <h3>{{ humanName }}</h3>
+                <div v-for="choice in choices">
+                    {{ choice.bits }}: {{ choice.meaning }}
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <div id="content">
@@ -48,7 +60,12 @@
                 class="bit"
                 v-bind:class="{ bit1: values[bitDef_i]==1 }"
             >{{ values[bitDef_i] }}</td>
-            <td v-if="bitDef.groupSpan!=-1" v-bind:rowspan="bitDef.groupSpan>1?bitDef.groupSpan:null" style="text-align: left; padding-left:1em; padding-right:1em">
+            <td
+                v-on:dblclick="showClusterOptions(bitDef.withinGroup)"
+                v-if="bitDef.groupSpan!=-1"
+                v-bind:rowspan="bitDef.groupSpan>1?bitDef.groupSpan:null"
+                style="text-align: left; padding-left:1em; padding-right:1em"
+            >
                 <strong v-if="groupHumanNameByName[bitDef.withinGroup]">{{ groupHumanNameByName[bitDef.withinGroup] }}<br /></strong>
                 {{ groupValues[bitDef.withinGroup] }} - {{ groupCurrentDescriptions[bitDef.withinGroup] }} 
             </td>

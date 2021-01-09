@@ -26,7 +26,14 @@ const tableOfContents = new Vue({ el: "#toc", data: {
 } });
 
 
-
+const optionsDialog = new Vue({ el: "#cluster-options",
+    data: {
+        cluster: "",
+        humanName: "",
+        choices: [],
+        visible: false,
+    },
+});
 
 
 
@@ -113,7 +120,36 @@ function renderRegister(register){
             toggleBit: function(values_i){
                 this.$set(this.values, values_i, 1^this.values[values_i]);
                 globalRegisterEvents.$emit("changed", this.name);
-            }
+            },
+
+            showClusterOptions: function(group_name){
+                const val = this.groupValues[group_name];
+                if(val.length < 1) return;
+                let g = null;
+                for(g of register.groups){
+                    if(g.name == group_name){
+                        break;
+                    }
+                }
+                if(!g) return;
+
+                const ret = [];
+
+                for(let i=0; i<Math.pow(2, val.length); i++){
+                    let bits = i.toString(2);
+                    while(bits.length < val.length) bits = '0' + bits;
+                    const meaning = g.evaluateMeaning(
+                        globalRegisterValues,    // all clusters state
+                        bits
+                    );
+                    ret.push({ bits, meaning });
+                }
+
+                optionsDialog.cluster = group_name;
+                optionsDialog.humanName = g.humanName;
+                optionsDialog.choices = ret;
+                optionsDialog.visible = true;
+            },
         },
 
         computed: {

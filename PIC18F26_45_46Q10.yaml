@@ -2,7 +2,9 @@ types:
     - &TYPE_ENABLED_DISABLED
         =1: Enabled
         =0: Disabled
-
+    - &TYPE_HIGH_LOW_PRIORITY
+        =1: High Priority
+        =0: Low Priority
 
 
 word: 8
@@ -272,6 +274,27 @@ registers:
             interrupt flag bits are clear prior to enabling an interrupt. This
             feature allows for software polling."
 
+    IPR0[0xEB5] rw reset 00110001 <Peripheral Interrupt Priority Register 0>:
+        TMR0IP[5] rw <Timer0 Interrupt Priority bit>:
+            <<: *TYPE_HIGH_LOW_PRIORITY
+        IOCIP[4] rw <Interrupt-on-Change Priority bit>:
+            <<: *TYPE_HIGH_LOW_PRIORITY
+        INT2IP[2] rw <INT2IP External Interrupt ‘2’ Priority bit>:
+            <<: *TYPE_HIGH_LOW_PRIORITY
+        INT1IP[1] rw <INT1IP External Interrupt ‘1’ Priority bit>:
+            <<: *TYPE_HIGH_LOW_PRIORITY
+        INT0IP[0] rw <INT0IP External Interrupt ‘0’ Priority bit>:
+            <<: *TYPE_HIGH_LOW_PRIORITY
+
+    IPR1[0xEB6] rw reset 11000011 <Peripheral Interrupt Priority Register 1>:
+        OSCFIP[7] rw <Oscillator Fail Interrupt Priority bit>:
+            <<: *TYPE_HIGH_LOW_PRIORITY
+        CSWIP[6] rw <CSWIP Clock-Switch Interrupt Priority bit>:
+            <<: *TYPE_HIGH_LOW_PRIORITY
+        ADTIP[1] rw <ADC Threshold Interrupt Priority bit>:
+            <<: *TYPE_HIGH_LOW_PRIORITY
+        ADIP[0] rw <ADIP ADC Interrupt Priority bit>:
+            <<: *TYPE_HIGH_LOW_PRIORITY
 
     PIR0[0xEC5] rw reset 00000000 <Peripheral Interrupt Request (Flag) Register 0>:
         TMR0IF[5] rw <Timer0 Interrupt Flag bit>:
@@ -375,4 +398,52 @@ registers:
         TMR2IE[1] rw <TMR2 to PR2 Match Interrupt Enable bit>:
             <<: *TYPE_ENABLED_DISABLED
         TMR1IE[0] rw <TMR1 Overflow Interrupt Enable bit>:
+            <<: *TYPE_ENABLED_DISABLED
+
+    PIE5[0xEC2] rw reset 00000000 <Peripheral Interrupt Enable Register 5>:
+        CLC4IE[7] rw <CLC4 Interrupt Enable bit>:
+            =1: CLC4 Interrupt Enabled
+            =0: CLC4 Interrupt Disabled
+        CLC3IE[6] rw <CLC3 Interrupt Enable bit>:
+            =1: CLC3 Interrupt Enabled
+            =0: CLC3 Interrupt Disabled
+        CLC2IE[5] rw <CLC2 Interrupt Enable bit>:
+            =1: CLC2 Interrupt Enabled
+            =0: CLC2 Interrupt Disabled
+        CLC1IE[4] rw <CLC1 Interrupt Enable bit>:
+            =1: CLC1 Interrupt Enabled
+            =0: CLC1 Interrupt Disabled
+        TMR5GIE[2] rw <TMR5 Gate Interrupt Enable bit>:
+            <<: *TYPE_ENABLED_DISABLED
+        TMR3GIE[1] rw <TMR3 Gate Interrupt Enable bit>:
+            <<: *TYPE_ENABLED_DISABLED
+        TMR1GIE[0] rw <TMR1 Gate Interrupt Enable bit>:
+            <<: *TYPE_ENABLED_DISABLED
+
+    PIE6[0xEC3] rw reset 00000000 <Peripheral Interrupt Enable Register 6>:
+        CLC8IE[7] rw <CLC4 Interrupt Enable bit>:
+            =1: CLC8 Interrupt Enabled
+            =0: CLC8 Interrupt Disabled
+        CLC7IE[6] rw <CLC3 Interrupt Enable bit>:
+            =1: CLC7 Interrupt Enabled
+            =0: CLC7 Interrupt Disabled
+        CLC6IE[5] rw <CLC2 Interrupt Enable bit>:
+            =1: CLC6 Interrupt Enabled
+            =0: CLC6 Interrupt Disabled
+        CLC5IE[4] rw <CLC1 Interrupt Enable bit>:
+            =1: CLC5 Interrupt Enabled
+            =0: CLC5 Interrupt Disabled
+        CCP2IE[1] rw <ECCP2 Interrupt Enable bit>:
+            <<: *TYPE_ENABLED_DISABLED
+        CCP1IE[0] rw <ECCP1 Interrupt Enable bit>:
+            <<: *TYPE_ENABLED_DISABLED
+
+    PIE7[0xEC4] rw reset 00000000 <Peripheral Interrupt Enable Register 7>:
+        SCANIE[7] rw <SCAN Interrupt Enable bit>:
+            <<: *TYPE_ENABLED_DISABLED
+        CRCIE[6] rw <CRCIE CRC Interrupt Enable bit>:
+            <<: *TYPE_ENABLED_DISABLED
+        NVMIE[5] rw <NVM Interrupt Enable bit>:
+            <<: *TYPE_ENABLED_DISABLED
+        CWG1IE[0] rw <CWG Interrupt Enable bit>:
             <<: *TYPE_ENABLED_DISABLED
