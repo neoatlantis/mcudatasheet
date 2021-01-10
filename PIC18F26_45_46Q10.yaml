@@ -421,16 +421,16 @@ registers:
             <<: *TYPE_ENABLED_DISABLED
 
     PIE6[0xEC3] rw reset 00000000 <Peripheral Interrupt Enable Register 6>:
-        CLC8IE[7] rw <CLC4 Interrupt Enable bit>:
+        CLC8IE[7] rw <CLC8 Interrupt Enable bit>:
             =1: CLC8 Interrupt Enabled
             =0: CLC8 Interrupt Disabled
-        CLC7IE[6] rw <CLC3 Interrupt Enable bit>:
+        CLC7IE[6] rw <CLC7 Interrupt Enable bit>:
             =1: CLC7 Interrupt Enabled
             =0: CLC7 Interrupt Disabled
-        CLC6IE[5] rw <CLC2 Interrupt Enable bit>:
+        CLC6IE[5] rw <CLC6 Interrupt Enable bit>:
             =1: CLC6 Interrupt Enabled
             =0: CLC6 Interrupt Disabled
-        CLC5IE[4] rw <CLC1 Interrupt Enable bit>:
+        CLC5IE[4] rw <CLC5 Interrupt Enable bit>:
             =1: CLC5 Interrupt Enabled
             =0: CLC5 Interrupt Disabled
         CCP2IE[1] rw <ECCP2 Interrupt Enable bit>:

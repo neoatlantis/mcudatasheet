@@ -28,11 +28,29 @@ const tableOfContents = new Vue({ el: "#toc", data: {
 
 const optionsDialog = new Vue({ el: "#cluster-options",
     data: {
+        register: "",
         cluster: "",
         humanName: "",
         choices: [],
         visible: false,
+        range: [],
     },
+
+    methods: {
+        makeChoice: function(val){ // val = "010101..."
+            const ret = {};
+            for(let i in this.range){
+                let bit_pos = this.range[i];
+                ret[bit_pos] = parseInt(val[i], 2);
+            }
+
+            this.$emit("choosen", {
+                register: this.register,
+                cluster: this.cluster,
+                value: ret, // { 15: 1, 14: 0, ... }
+            });
+        }
+    }
 });
 
 
@@ -145,9 +163,11 @@ function renderRegister(register){
                     ret.push({ bits, meaning });
                 }
 
+                optionsDialog.register = register.name;
                 optionsDialog.cluster = group_name;
                 optionsDialog.humanName = g.humanName;
                 optionsDialog.choices = ret;
+                optionsDialog.range = g.range;
                 optionsDialog.visible = true;
             },
         },
@@ -157,6 +177,31 @@ function renderRegister(register){
                 let ret = {};
                 for(let i=0; i<this.bits.length; i++){
                     ret[this.bits[i].bit] = this.values[i];
+                }
+                return ret;
+            },
+            defaultValueByBit: function(){
+                let ret = {};
+                for(let i=0; i<this.bits.length; i++){
+                    ret[this.bits[i].bit] = register.bitsDefault[i];
+                }
+                return ret;
+            },
+            nondefaultGroupValues: function(){
+                /* All groups(clusters) that have values changed from default.*/
+                const ret = {};
+                for(let g of register.groups){
+                    const defaultValue = g.range.map(
+                        (bit)=>this.defaultValueByBit[bit].toString()).join("");
+                    const currentValue = g.range.map(
+                        (bit)=>this.valueByBit[bit].toString()).join("");
+                    if(defaultValue != currentValue){
+                        ret[g.name] = {
+                            default: defaultValue,
+                            value: currentValue,
+                            hex: '0x' + parseInt(currentValue, 2).toString(16).toUpperCase(),
+                        };
+                    }
                 }
                 return ret;
             },
@@ -199,6 +244,20 @@ function renderRegister(register){
                 return ret;
             },
         },
+    });
+
+
+    // Listen of optionsDialog event "choosen"
+    optionsDialog.$on("choosen", function(e){
+        if(register.name != e.register) return;
+        const newVal = e.value;
+        for(let i in ret.bits){
+            let bit_pos = ret.bits[i].bit;
+            if(newVal[bit_pos] != undefined){
+                ret.values[i] = newVal[bit_pos];
+            }
+        }
+        ret.values = JSON.parse(JSON.stringify(ret.values));
     });
 
     return ret;

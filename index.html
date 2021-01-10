@@ -6,6 +6,7 @@
 <script src="main.js" type="module"></script>
 
 <link href="main.css" rel="stylesheet" />
+
 </head>
 <body>
 
@@ -29,7 +30,9 @@
             <h2>{{ cluster }}</h2>
             <h3>{{ humanName }}</h3>
                 <div v-for="choice in choices">
-                    {{ choice.bits }}: {{ choice.meaning }}
+                    {{ choice.bits }}: 
+                    <a href="#" v-if='choice.meaning.toLowerCase().indexOf("reserved")<0' v-on:click.prevent="makeChoice(choice.bits)">{{ choice.meaning }}</a>
+                    <template v-else>{{ choice.meaning }}</template>
                 </div>
             </div>
         </div>
@@ -68,6 +71,12 @@
             >
                 <strong v-if="groupHumanNameByName[bitDef.withinGroup]">{{ groupHumanNameByName[bitDef.withinGroup] }}<br /></strong>
                 {{ groupValues[bitDef.withinGroup] }} - {{ groupCurrentDescriptions[bitDef.withinGroup] }} 
+
+                <div
+                    style="text-align:right; color: red"
+                    v-show="nondefaultGroupValues[bitDef.withinGroup]"
+                >
+                    <textarea class="code" readonly>{{ nondefaultGroupValues[bitDef.withinGroup] ? name + "bits." + bitDef.withinGroup + "=" + nondefaultGroupValues[bitDef.withinGroup].hex + ";" : "" }}</textarea> </div>
             </td>
         </tr>
     </table>
