@@ -14,8 +14,12 @@
 
 <div id="toc">
     <h2>{{ mcu }}</h2>
+    <select v-model="filterModule" v-on:change="updateFilter">
+        <option value="">----Select a given module ----</option>
+        <option v-for="(_, moduleName) in modules" v-bind:value="moduleName">{{ moduleName }}</option>
+    </select>
     <ul>
-        <li v-for="bookmark in bookmarks">
+        <li v-for="bookmark in bookmarks" v-if="filterRegister.length < 1 || filterRegister.indexOf(bookmark.name) >= 0">
             <a v-bind:href="bookmark.href">
                 <strong>{{ bookmark.name }}</strong>
                 <i>{{ bookmark.humanName }}</i>
@@ -42,14 +46,14 @@
 <div id="content">
 </div>
 
-<div id="template" style="display:none">
+<div id="template" style="display:none"><div v-show="filterRegister.length < 1 || filterRegister.indexOf(name) >= 0">
 
     <div v-on:click="collapsed=!collapsed" style="border: 1px solid black; background-color:#CCCCFF; padding:0.5em">
         <strong>{{ name }}</strong> <span>{{ humanName }}</span></h2>
     </div>
 
     <table v-show="!collapsed">
-        <tr v-for="(bitDef, bitDef_i) in bits" v-if="bitDef.withinGroup">
+        <tr v-for="(bitDef, bitDef_i) in bits" v-if="bitDef.withinGroup && (filterCluster.length < 1 || filterCluster.indexOf(bitDef.withinGroup) >= 0)">
             <td style="width: 3em;">{{ bitDef.bit }}</td>
             <td
                 style="width: 10em"
@@ -83,7 +87,7 @@
 
     <br />
 
-</div>
+</div></div>
 
 </body>
 </html>

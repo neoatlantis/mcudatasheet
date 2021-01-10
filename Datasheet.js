@@ -14,6 +14,18 @@ class Datasheet{
                 this._parseRegister(registerName, json.registers[registerName]);
             this.registers[parsed.name] = parsed;
         }
+        this.modules = {};
+        for(let moduleName in json.modules){
+            this.modules[moduleName] = 
+                this._parseModule(json.modules[moduleName]);
+        }
+    }
+
+    _parseModule(moduleDesc){
+        const ret = { registers: [], clusters: [] };
+        ret.registers = (moduleDesc.registers || "").trim().split(/\s+/);
+        ret.clusters = (moduleDesc.clusters || "").trim().split(/\s+/);
+        return ret;
     }
 
     _parseRegister(registerName, registerConfig){

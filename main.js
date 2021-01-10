@@ -20,10 +20,32 @@ globalRegisterEvents.$on("changed", function(registerName){
 
 
 
-const tableOfContents = new Vue({ el: "#toc", data: { 
-    mcu: MCU_TYPE, 
-    bookmarks: []
-} });
+const tableOfContents = new Vue({ el: "#toc",
+    data: { 
+        mcu: MCU_TYPE,
+        filterModule: "",
+        filterRegister: [],
+        bookmarks: [],
+        modules: {},
+    },
+    methods: {
+        updateFilter: function(){
+            let moduleChoosen = this.modules[this.filterModule];
+            if(!moduleChoosen){
+                this.filterRegister = [];
+                this.$emit("filter", { register: [], cluster: [], });
+                return;
+            }
+            let r = JSON.parse(JSON.stringify(moduleChoosen.registers)).filter((e)=>Boolean(e));
+            let c = JSON.parse(JSON.stringify(moduleChoosen.clusters)).filter((e)=>Boolean(e));
+            this.filterRegister = r;
+            this.$emit("filter", {
+                register: r,
+                cluster: c,
+            });
+        }
+    }
+});
 
 
 const optionsDialog = new Vue({ el: "#cluster-options",
@@ -74,6 +96,7 @@ for(let r in datasheet.registers){
         humanName: newRegister.humanName,
         href: "#register-" + newRegister.name,
     });
+    tableOfContents.modules = JSON.parse(JSON.stringify(datasheet.modules));
 }
 function renderRegister(register){
     const elId = "register-" + register.name;
@@ -124,6 +147,9 @@ function renderRegister(register){
         el: "#"+elId,
         data: {
             collapsed: false,
+
+            filterRegister: [],
+            filterCluster: [],
 
             name: register.name,
             humanName: register.humanName,
@@ -260,11 +286,21 @@ function renderRegister(register){
         ret.values = JSON.parse(JSON.stringify(ret.values));
     });
 
+    // Listen of ToC event "filter"
+    tableOfContents.$on("filter", function({ register, cluster }){
+        ret.filterRegister = register;
+        ret.filterCluster = cluster;
+    });
+
     return ret;
 }
 
 
 
+
+/*
+tableOfContents.$emit("filter", { register: ["INTCON"], cluster: ["IPEN"] });
+*/
 
 /*const app = new Vue({
     el: "#app",

@@ -194,7 +194,7 @@ registers:
             =001: Pin selected by T0CKIPPS (Inverted)
             =000: Pin selected by T0CKIPPS (Non-inverted)
 
-        T0ASYUNC[4] rw <TMR0 Input Asynchronization Enable>:
+        T0ASYNC[4] rw <TMR0 Input Asynchronization Enable>:
             =1: The input to the TMR0 counter is not synchronized to system clocks
             =0: The input to the TMR0 counter is synchronized to FOSC/4
 
@@ -447,3 +447,18 @@ registers:
             <<: *TYPE_ENABLED_DISABLED
         CWG1IE[0] rw <CWG Interrupt Enable bit>:
             <<: *TYPE_ENABLED_DISABLED
+
+
+
+
+modules:
+    Timer0 Module: 
+        registers: |
+            T0CON0 T0CON1 TMR0H TMR0L
+
+    Interrupts:
+        registers: |
+            IPR0 IPR1 IPR2 IPR3 IPR4 IPR5 IPR6 IPR7
+            PIE0 PIE1 PIE2 PIE3 PIE4 PIE5 PIE6 PIE7
+            PIR0 PIR1 PIR2 PIR3 PIR4 PIR5 PIR6 PIR7
+            INTCON
